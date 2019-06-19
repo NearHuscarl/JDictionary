@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+}
+
+group 'com.nearhuscarl'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group:'org.xerial', name:'sqlite-jdbc', version:'3.27.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.1'
+    compile 'de.jensd:fontawesomefx-commons:9.0.0'
+    compile 'de.jensd:fontawesomefx-fontawesome:4.7.0-9'
+    compile 'de.jensd:fontawesomefx-materialdesignfont:2.0.26-9'
+    compile 'de.jensd:fontawesomefx-materialicons:2.2.0-9'
+}
+
+javafx {
+    modules = ['javafx.controls', 'javafx.fxml']
+    version = '12.0.1'
+}
+
+mainClassName = 'com.nearhuscarl.App'
