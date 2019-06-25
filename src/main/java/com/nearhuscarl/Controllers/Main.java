@@ -1,12 +1,12 @@
 package com.nearhuscarl.Controllers;
 
 import com.nearhuscarl.Helpers.*;
+import com.nearhuscarl.Models.History;
 import com.nearhuscarl.controls.DefinitionTextArea;
 import com.nearhuscarl.Data.DataAccess;
 import com.nearhuscarl.Models.Word;
 import com.nearhuscarl.controls.FxDialogs;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,7 +19,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
 public class Main implements Initializable {
@@ -29,6 +32,7 @@ public class Main implements Initializable {
     public TextField inputTextField;
     public Button searchButton;
     private ArrayList<String> wordList;
+    private History<String> history = new History<>();
 
     private String getSelectedWord() {
         return (String)wordListView.getSelectionModel().getSelectedItem();
@@ -60,7 +64,7 @@ public class Main implements Initializable {
         inputTextField.setOnAction(onSearch);
         inputTextField.setOnKeyReleased(onKeyPressed);
 
-        definitionTextArea.setOnMousePressed(onDoubleClickedDefinitionArea);
+        definitionTextArea.setOnMouseClickedArea(onDoubleClickedDefinitionArea);
     }
 
     private void searchWord(String query) {
@@ -74,8 +78,8 @@ public class Main implements Initializable {
 
         ArrayList<Word> data = result.getData();
         if (data.size() > 0) {
-            definitionTextArea.clear();
-            definitionTextArea.appendText(data.get(0).toPrettyString());
+            Word word = data.get(0);
+            definitionTextArea.setContent(word);
         }
     }
 
@@ -111,16 +115,8 @@ public class Main implements Initializable {
         String text = definitionTextArea.getText();
     }
 
-    private EventHandler<MouseEvent> onDoubleClickedDefinitionArea = e -> {
-        if (e.getClickCount() == 1) {
-            String query = WordUtil.normalize(definitionTextArea.getSelectedText());
-            System.out.println(query);
-            if (query == FontAwesomeIcon.VOLUME_UP.unicode()) {
-                System.out.println("audio ");
-            }
-        }
-
-        if (e.getClickCount() == 2) {
+    private EventHandler<MouseEvent> onDoubleClickedDefinitionArea = event -> {
+        if (event.getClickCount() == 2) {
             String query = WordUtil.normalize(definitionTextArea.getSelectedText());
             searchWord(query);
         }

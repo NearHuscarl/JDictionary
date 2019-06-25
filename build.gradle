@@ -19,6 +19,11 @@ dependencies {
     compile group:'org.xerial', name:'sqlite-jdbc', version:'3.27.2'
     implementation 'com.google.code.gson:gson:2.8.5'
     compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.1'
+
+    compile group: 'com.googlecode.soundlibs', name: 'tritonus-share', version: '0.3.7-2'
+    compile group: 'com.googlecode.soundlibs', name: 'mp3spi', version: '1.9.5-1'
+    compile group: 'com.googlecode.soundlibs', name: 'vorbisspi', version: '1.0.3-1'
+    
     compile 'de.jensd:fontawesomefx-commons:9.0.0'
     compile 'de.jensd:fontawesomefx-fontawesome:4.7.0-9'
     compile 'de.jensd:fontawesomefx-materialdesignfont:2.0.26-9'

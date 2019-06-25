@@ -1,12 +1,17 @@
 package com.nearhuscarl.controls;
 import com.nearhuscarl.Constants;
+import com.nearhuscarl.Helpers.AudioFilePlayer;
+import com.nearhuscarl.Models.Word;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.beans.NamedArg;
-import javafx.event.EventType;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import org.fxmisc.richtext.StyleClassedTextArea;
-import org.fxmisc.richtext.event.MouseOverTextEvent;
 import org.fxmisc.richtext.model.*;
 import org.reactfx.Subscription;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,7 +32,6 @@ public class DefinitionTextArea extends StyleClassedTextArea {
             "formal", "informal", "saying", "old-fashioned", "humorous", "literary",
     };
 
-    // \n.*?(?:\n\s)
     private static final String KEYWORD_PATTERN = "(?i)^(\\w+) (\\w+)"; // match the first word at the first line
     private static final String BRE_PATTERN = "BrE";
     private static final String NAME_PATTERN = "NAmE";
@@ -69,7 +73,54 @@ public class DefinitionTextArea extends StyleClassedTextArea {
         setupSyntaxHighlighting();
     }
 
+    private Word word;
+
+    public void setContent(Word word) {
+        this.word = word;
+        this.clear();
+        this.appendText(word.toPrettyString());
+    }
+
+    private EventHandler<? super MouseEvent> onClicked2 = null;
+    private EventHandler<MouseEvent> onClicked = event -> {
+        if (event.getClickCount() == 1) {
+            int charIndex = getCaretPosition();
+            String chr = getText(charIndex, charIndex+1);
+
+            if (chr.equals(FontAwesomeIcon.VOLUME_UP.unicode())) {
+                Collection<String> styles = getStyleOfChar(charIndex);
+                String audioFile = "";
+
+                for (String style: styles) {
+                    if (style.equals("icon-red")) {
+                        audioFile = word.getPronunciations().get(1).getFileName().replaceAll("mp3$", "ogg");
+                        break;
+                    }
+                    if (style.equals("icon-blue")) {
+                        audioFile = word.getPronunciations().get(0).getFileName().replaceAll("mp3$", "ogg");
+                        break;
+                    }
+                }
+
+                System.out.println("audio file: " + audioFile);
+                Path audioPath = Paths.get(System.getProperty("user.dir"), "audio", audioFile);
+                AudioFilePlayer player = new AudioFilePlayer();
+                player.play(audioPath.toString());
+            }
+        }
+
+        if (onClicked2 != null) {
+            onClicked2.handle(event);
+        }
+    };
+
+    public final void setOnMouseClickedArea(EventHandler<? super MouseEvent> value) {
+        onClicked2 = value;
+    }
+
     private void setupSyntaxHighlighting() {
+        setOnMousePressed(onClicked);
+
         // recompute the syntax highlighting 500 ms after user stops editing area
         Subscription cleanupWhenNoLongerNeedIt = this
 

@@ -38,6 +38,9 @@ public class Word {
     }
 
     public String getWordform() {
+        if (wordform == null) {
+            return "none";
+        }
         return wordform;
     }
 
@@ -108,7 +111,7 @@ public class Word {
     private String prettySummary() {
         StringBuilder sb = new StringBuilder();
 
-        appendLine(sb, name + " " + wordform);
+        appendLine(sb, name + " " + getWordform());
 
         for(Pronunciation pronunciation: pronunciations) {
             appendLine(sb, pronunciation.toString() + " " + FontAwesomeIcon.VOLUME_UP.unicode());

@@ -1,8 +1,11 @@
 package com.nearhuscarl.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Pronunciation {
     private String prefix;
     private String ipa = "";
+    @SerializedName("filename")
     private String fileName;
 
     public String getPrefix() {

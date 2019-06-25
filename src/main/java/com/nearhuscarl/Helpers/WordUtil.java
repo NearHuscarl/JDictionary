@@ -11,6 +11,6 @@ public class WordUtil {
     }
 
     public static String normalize(String word) {
-        return normalizeUnicodeCharacters(word).trim();
+        return normalizeUnicodeCharacters(word).toLowerCase().trim();
     }
 }
