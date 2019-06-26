@@ -3,9 +3,9 @@ package com.nearhuscarl.Models;
 import java.util.ArrayList;
 
 public class History<T> {
-    private int maxHistory;
-    private int currentIndex;
-    private ArrayList<T> collection;
+    private int maxHistory = 1000;
+    private int currentIndex = -1;
+    private ArrayList<T> collection = new ArrayList<>();
 
     public int getMaxHistory() {
         return maxHistory;
