@@ -129,9 +129,6 @@ public class DefinitionTextArea extends StyleClassedTextArea {
                 //   when making multiple changes (e.g. renaming a method at multiple parts in file)
                 .multiPlainChanges()
 
-                // do not emit an event until 500 ms have passed since the last emission of previous stream
-                .successionEnds(Duration.ofMillis(500))
-
                 // run the following code block when previous stream emits an event
                 .subscribe(ignore -> this.setStyleSpans(0, computeHighlighting(this.getText())));
 

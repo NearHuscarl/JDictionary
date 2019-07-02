@@ -30,6 +30,12 @@
 .button {
     -fx-cursor: hand;
 }
+.button-icon {
+    -fx-line-height: 26;
+    /*-fx-padding: 0 0 -3 0;*/
+    -fx-font-size: 12;
+    -fx-font-family: FontAwesome;
+}
 .icon-red {
     -fx-fill: red;
 }
