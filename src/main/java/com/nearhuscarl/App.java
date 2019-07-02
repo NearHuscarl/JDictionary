@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -30,6 +31,7 @@ public class App extends Application {
         Font.loadFont(App.class.getResource("OpenSansEmoji.ttf").toExternalForm(), 10);
         Font.loadFont(App.class.getResource("fontawesome-webfont.ttf").toExternalForm(), 10);
 
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
         primaryStage.setTitle("JDictionary");
         primaryStage.setScene(scene);
         primaryStage.show();
