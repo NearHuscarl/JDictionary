@@ -74,7 +74,7 @@ public class DataAccess {
             statement.setQueryTimeout(5); // seconds
 
             var result = statement.executeQuery("" +
-                    "SELECT [Name]" +
+                    "SELECT DISTINCT [Name]" +
                     "FROM [Dictionary]" +
                     "ORDER BY [ID] ASC");
 

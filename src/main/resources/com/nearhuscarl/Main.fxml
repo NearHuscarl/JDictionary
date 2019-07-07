@@ -8,11 +8,15 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import org.fxmisc.flowless.VirtualizedScrollPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nearhuscarl.Controllers.Main">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nearhuscarl.Controllers.Main">
    <left>
-      <ListView fx:id="wordListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <VBox spacing="10.0" BorderPane.alignment="CENTER">
+         <ListView fx:id="wordListView" prefHeight="500.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         <ListView fx:id="otherWordListView" maxHeight="50.0" minHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      </VBox>
    </left>
    <center>
        <VirtualizedScrollPane BorderPane.alignment="CENTER">
@@ -30,12 +34,12 @@
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="inputTextField" prefHeight="32.0" prefWidth="142.0" />
-            <Button fx:id="searchButton" styleClass="button, button-icon" minWidth="17.0" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" text="" />
-            <Button fx:id="prevButton" styleClass="button, button-icon" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" text="" />
-            <Button fx:id="nextButton" styleClass="button, button-icon" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" text="" />
-            <Button fx:id="addButton" styleClass="button, button-icon" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" text="" />
+            <Button fx:id="searchButton" minWidth="17.0" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
+            <Button fx:id="prevButton" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
+            <Button fx:id="nextButton" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
+            <Button fx:id="addButton" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button styleClass="button, button-icon" layoutX="162.0" layoutY="10.0" minWidth="17.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" text="" />
+            <Button layoutX="162.0" layoutY="10.0" minWidth="17.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
          </children>
          <BorderPane.margin>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

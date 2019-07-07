@@ -7,6 +7,8 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Word {
     private String id;
@@ -268,5 +270,15 @@ public class Word {
         stringBuilder.append(MessageFormat.format("Similar: {0}\n", Helpers.List2String(similar)));
 
         return stringBuilder.toString();
+    }
+
+    private Pattern idNumberRegex = Pattern.compile("(\\d+)$");
+    public int getIdNumber() {
+        Matcher matcher = idNumberRegex.matcher(id);
+        if (matcher.find())
+        {
+            return Integer.parseInt(matcher.group(1));
+        }
+        return -1;
     }
 }

@@ -10,16 +10,19 @@ import com.nearhuscarl.Models.Word;
 import com.nearhuscarl.controls.FxDialogs;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,22 +33,41 @@ public class Main implements Initializable {
     private HistoryAccess historyAccess;
     public DefinitionTextArea definitionTextArea;
     public ListView wordListView;
+    public ListView otherWordListView;
     public TextField inputTextField;
     public Button searchButton;
     public Button prevButton;
     public Button nextButton;
     public Button addButton;
     private ArrayList<String> wordList;
+    private ObservableList<Word> otherWordList;
     private History<String> history;
+    private Callback<ListView, ListCell> wordListCellCb = param -> new ListCell<Word>() {
+        @Override
+        protected void updateItem(Word item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if (empty || item == null) {
+                setText(null);
+            } else {
+                setText(item.getName() + " " + item.getWordform());
+            }
+        }
+    };
 
     private String getSelectedWord() {
         return (String)wordListView.getSelectionModel().getSelectedItem();
+    }
+    private Word getSelectedOtherWord() {
+        return (Word)otherWordListView.getSelectionModel().getSelectedItem();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dataAccess = new DataAccess();
         historyAccess = new HistoryAccess();
+        otherWordListView.managedProperty().bind(otherWordListView.visibleProperty());
+        otherWordList = FXCollections.observableArrayList();
 
         historyAccess.loadHistory();
 
@@ -80,6 +102,9 @@ public class Main implements Initializable {
 
         wordListView.setItems(FXCollections.observableArrayList(wordList));
         wordListView.setOnMouseClicked(onMouseClickedWordList);
+        otherWordListView.setItems(otherWordList);
+        otherWordListView.setOnMouseClicked(onMouseClickedOtherWordList);
+        otherWordListView.setCellFactory(wordListCellCb);
 
         searchButton.setOnAction(onSearch);
         inputTextField.setOnAction(onSearch);
@@ -94,6 +119,10 @@ public class Main implements Initializable {
     }
 
     private void searchWord(String query) {
+        searchWord(query, true);
+    }
+    private void searchWord(String query, Boolean updateOtherWordListView) {
+        query = WordUtil.normalize(query);
         Result<ArrayList<Word>> result = dataAccess.selectDefinitionFrom(query);
 
         if (result.getInfo().getStatus() != Status.Success) {
@@ -108,6 +137,20 @@ public class Main implements Initializable {
             definitionTextArea.setContent(word);
             updateHistory(word);
         }
+
+        if (!updateOtherWordListView) return;
+
+        otherWordList.clear();
+        if (data.size() > 1) {
+            for (int i = 1; i < data.size(); i++) {
+                Word otherWord = data.get(i);
+                otherWordList.add(otherWord);
+            }
+            otherWordListView.setVisible(true);
+        }
+        else {
+            otherWordListView.setVisible(false);
+        }
     }
 
     private void updateHistory(Word word) {
@@ -119,7 +162,7 @@ public class Main implements Initializable {
         onHistoryChanged();
     }
 
-    private EventHandler<MouseEvent> onMouseClickedWordList = new EventHandler<MouseEvent>() {
+    private EventHandler<MouseEvent> onMouseClickedWordList = new EventHandler<>() {
 
         @Override
         public void handle(MouseEvent event) {
@@ -129,6 +172,20 @@ public class Main implements Initializable {
                 if(event.getClickCount() == 2) {
                     String query = inputTextField.getText();
                     searchWord(query);
+                }
+            }
+        }
+    };
+    private EventHandler<MouseEvent> onMouseClickedOtherWordList = new EventHandler<>() {
+
+        @Override
+        public void handle(MouseEvent event) {
+            if(event.getButton() == MouseButton.PRIMARY) {
+                Word otherWord = getSelectedOtherWord();
+                inputTextField.setText(otherWord.getName());
+
+                if(event.getClickCount() == 2) {
+                    searchWord(otherWord.getId(), false);
                 }
             }
         }
@@ -166,8 +223,7 @@ public class Main implements Initializable {
 
     private EventHandler<MouseEvent> onDoubleClickedDefinitionArea = (event) -> {
         if (event.getClickCount() == 2) {
-            String query = WordUtil.normalize(definitionTextArea.getSelectedText());
-            searchWord(query);
+            searchWord(definitionTextArea.getSelectedText());
         }
     };
 

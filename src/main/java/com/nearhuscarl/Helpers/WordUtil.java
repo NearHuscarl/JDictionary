@@ -11,6 +11,10 @@ public class WordUtil {
     }
 
     public static String normalize(String word) {
-        return normalizeUnicodeCharacters(word).toLowerCase().trim();
+        return normalizeUnicodeCharacters(word)
+                .trim()
+                .toLowerCase()
+                .replace(' ', '-') // Aaron Copland -> aaron-copland
+                .replace("'", ""); // 'Fats' Waller -> fats waller
     }
 }
