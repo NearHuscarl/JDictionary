@@ -12,7 +12,6 @@ import org.reactfx.Subscription;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,6 +41,7 @@ public class DefinitionTextArea extends StyleClassedTextArea {
     private static final String EXAMPLE_PATTERN = Constants.U_Bullet + ".*\\n";
     private static final String HEADER_PATTERN = "(?m)^([0-9]+\\..*|Idioms|Other Examples)$";
     private static final String ICON_PATTERN = "[\\uf000-\\uffff]";
+    private static final String WRONG_WORD_PATTERN = "\".+\"(?= in the dictionary)";
 
     private static final Pattern PATTERN = Pattern.compile(
             "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
@@ -52,6 +52,7 @@ public class DefinitionTextArea extends StyleClassedTextArea {
                     + "|(?<LABEL2>" + LABELS_WITH_PARENTHESES_PATTERN + ")"
                     + "|(?<EXAMPLE>" + EXAMPLE_PATTERN + ")"
                     + "|(?<HEADER>" + HEADER_PATTERN + ")"
+                    + "|(?<WRONGWORD>" + WRONG_WORD_PATTERN + ")"
     );
 
     public DefinitionTextArea(@NamedArg("document") EditableStyledDocument<Collection<String>, String, Collection<String>> document,
@@ -79,6 +80,10 @@ public class DefinitionTextArea extends StyleClassedTextArea {
         this.word = word;
         this.clear();
         this.appendText(word.toPrettyString());
+    }
+    public void setContent(String text) {
+        this.clear();
+        this.appendText(text);
     }
 
     private EventHandler<? super MouseEvent> onClicked2 = null;
@@ -172,6 +177,9 @@ public class DefinitionTextArea extends StyleClassedTextArea {
             }
             else if (matcher.group("HEADER") != null) {
                 styleClass += "header";
+            }
+            else if (matcher.group("WRONGWORD") != null) {
+                styleClass += "red";
             }
             /* never happens */ assert styleClass != null;
 

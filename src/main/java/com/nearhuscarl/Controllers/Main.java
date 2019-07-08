@@ -1,6 +1,7 @@
 package com.nearhuscarl.Controllers;
 
 import com.nearhuscarl.App;
+import com.nearhuscarl.Constants;
 import com.nearhuscarl.Data.HistoryAccess;
 import com.nearhuscarl.Helpers.*;
 import com.nearhuscarl.Models.History;
@@ -26,11 +27,13 @@ import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Main implements Initializable {
     private DataAccess dataAccess;
     private HistoryAccess historyAccess;
+    private SpellCheck spellCheck;
     public DefinitionTextArea definitionTextArea;
     public ListView wordListView;
     public ListView otherWordListView;
@@ -90,6 +93,7 @@ public class Main implements Initializable {
         // We dont need ObservableList because word list will only changed (initialized)
         // once on startup
         wordList = result.getData();
+        spellCheck = new SpellCheck(wordList);
 
         if (history.count() > 0) {
             searchWord(history.current());
@@ -151,6 +155,31 @@ public class Main implements Initializable {
         else {
             otherWordListView.setVisible(false);
         }
+
+        if (data.size() == 0) { // word not found
+            definitionTextArea.setContent(getSuggestions(query));
+        }
+    }
+
+    private String getSuggestions(String wrongWord) {
+        List<String> candidates = spellCheck.candidates(wrongWord);
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n");
+        sb.append("No match for \"" + wrongWord + "\" in the dictionary\n");
+        sb.append("\n");
+
+        if (candidates == null || (candidates.size() == 1 && candidates.get(0).equals(wrongWord))) {
+            return sb.toString();
+        }
+
+        sb.append("Did you mean:\n");
+        for (String candidate: candidates)
+        {
+            sb.append(" " + Constants.U_Bullet + " " + candidate + "\n");
+        }
+
+        return sb.toString();
     }
 
     private void updateHistory(Word word) {
