@@ -67,7 +67,7 @@
 
 .header {
     -fx-fill: orange;
-    font-weight: bold;
+    -fx-font-weight: bold;
 }
 
 .label {

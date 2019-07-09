@@ -1,4 +1,4 @@
-package com.nearhuscarl.Helpers;
+package com.nearhuscarl.Models;
 
 public enum Status {
     Success,

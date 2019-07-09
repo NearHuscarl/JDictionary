@@ -2,9 +2,9 @@ package com.nearhuscarl.Controllers;
 
 import com.nearhuscarl.App;
 import com.nearhuscarl.Data.SettingsAccess;
-import com.nearhuscarl.Helpers.Result;
-import com.nearhuscarl.Helpers.ResultInfo;
-import com.nearhuscarl.Helpers.Status;
+import com.nearhuscarl.Models.Result;
+import com.nearhuscarl.Models.ResultInfo;
+import com.nearhuscarl.Models.Status;
 import com.nearhuscarl.Models.HistoryOnStartup;
 import com.nearhuscarl.Models.Settings;
 import com.nearhuscarl.controls.FxDialogs;
@@ -42,7 +42,8 @@ public class SettingsController implements Initializable {
         try {
             window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
-            window.setTitle("SettingsController");
+            window.setTitle("Settings");
+            window.setResizable(false);
 
             Parent root = FXMLLoader.load(App.class.getResource("Settings.fxml"));
             Scene scene = new Scene(root);

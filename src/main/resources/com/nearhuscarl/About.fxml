@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="400.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nearhuscarl.Controllers.AboutController">
+   <children>
+      <ImageView fitHeight="96.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icon.png" />
+         </image>
+      </ImageView>
+      <Label text="JDictionary" styleClass="about-title" />
+      <GridPane hgap="10.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Version:" styleClass="about-label" />
+            <Label text="Author:" GridPane.rowIndex="1" styleClass="about-label" />
+            <Label text="License:" GridPane.rowIndex="2" styleClass="about-label" />
+            <Label text="1.0.0" GridPane.columnIndex="1" />
+            <Label text="Near Huscarl" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="MIT License" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <HBox prefHeight="20.0">
+         <children>
+            <Hyperlink fx:id="bugLink" text="Report bug" />
+            <Region prefHeight="74.0" prefWidth="58.0" HBox.hgrow="ALWAYS" />
+            <Hyperlink fx:id="sourceLink" text="Source Code" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

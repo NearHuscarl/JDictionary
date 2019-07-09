@@ -1,4 +1,4 @@
-package com.nearhuscarl.Helpers;
+package com.nearhuscarl.Models;
 
 public class ResultInfo {
     private String message;

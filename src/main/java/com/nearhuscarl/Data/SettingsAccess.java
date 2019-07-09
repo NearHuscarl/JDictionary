@@ -1,8 +1,8 @@
 package com.nearhuscarl.Data;
 
-import com.nearhuscarl.Helpers.Result;
-import com.nearhuscarl.Helpers.ResultInfo;
-import com.nearhuscarl.Helpers.Status;
+import com.nearhuscarl.Models.Result;
+import com.nearhuscarl.Models.ResultInfo;
+import com.nearhuscarl.Models.Status;
 import com.nearhuscarl.Helpers.XmlUtil;
 import com.nearhuscarl.Models.HistoryOnStartup;
 import com.nearhuscarl.Models.Settings;

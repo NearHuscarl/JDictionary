@@ -5,12 +5,9 @@ import com.nearhuscarl.Constants;
 import com.nearhuscarl.Data.HistoryAccess;
 import com.nearhuscarl.Data.SettingsAccess;
 import com.nearhuscarl.Helpers.*;
-import com.nearhuscarl.Models.History;
-import com.nearhuscarl.Models.HistoryOnStartup;
-import com.nearhuscarl.Models.Settings;
+import com.nearhuscarl.Models.*;
 import com.nearhuscarl.controls.DefinitionTextArea;
 import com.nearhuscarl.Data.DataAccess;
-import com.nearhuscarl.Models.Word;
 import com.nearhuscarl.controls.FxDialogs;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,6 +42,7 @@ public class MainController implements Initializable {
     public Button prevButton;
     public Button nextButton;
     public Button addButton;
+    public Button aboutButton;
     public Button settingButton;
     private ArrayList<String> wordList;
     private ObservableList<Word> otherWordList;
@@ -128,6 +126,7 @@ public class MainController implements Initializable {
         nextButton.setOnAction(nextHistory);
         addButton.setOnAction(addWord);
         settingButton.setOnAction(openSettings);
+        aboutButton.setOnAction(openAbout);
 
         App.setOnClose(onClose);
 
@@ -271,6 +270,9 @@ public class MainController implements Initializable {
     private EventHandler<ActionEvent> addWord;
     private EventHandler<ActionEvent> openSettings = (e) -> {
         SettingsController.open();
+    };
+    private EventHandler<ActionEvent> openAbout = (e) -> {
+        AboutController.open();
     };
 
     private EventHandler<WindowEvent> onClose = (e) -> {

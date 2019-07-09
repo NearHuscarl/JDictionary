@@ -14,7 +14,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import com.nearhuscarl.controls.NumericTextField?>
-<VBox prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nearhuscarl.Controllers.SettingsController">
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nearhuscarl.Controllers.SettingsController">
     <children>
         <TabPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="320.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
