@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.fxmisc.flowless.VirtualizedScrollPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nearhuscarl.Controllers.Main">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nearhuscarl.Controllers.MainController">
    <left>
       <VBox spacing="10.0" BorderPane.alignment="CENTER">
          <ListView fx:id="wordListView" prefHeight="500.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
@@ -39,7 +39,7 @@
             <Button fx:id="nextButton" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
             <Button fx:id="addButton" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button layoutX="162.0" layoutY="10.0" minWidth="17.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
+            <Button fx:id="settingButton" layoutX="162.0" layoutY="10.0" minWidth="17.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-min-width: 1;" styleClass="button, button-icon" text="" />
          </children>
          <BorderPane.margin>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

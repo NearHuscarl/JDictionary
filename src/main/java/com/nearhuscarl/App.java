@@ -36,7 +36,9 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> {
-            onClose.handle(e);
+            if (onClose != null) {
+                onClose.handle(e);
+            }
             primaryStage.close();
         });
     }

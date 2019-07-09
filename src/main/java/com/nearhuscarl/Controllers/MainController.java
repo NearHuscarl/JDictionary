@@ -3,13 +3,15 @@ package com.nearhuscarl.Controllers;
 import com.nearhuscarl.App;
 import com.nearhuscarl.Constants;
 import com.nearhuscarl.Data.HistoryAccess;
+import com.nearhuscarl.Data.SettingsAccess;
 import com.nearhuscarl.Helpers.*;
 import com.nearhuscarl.Models.History;
+import com.nearhuscarl.Models.HistoryOnStartup;
+import com.nearhuscarl.Models.Settings;
 import com.nearhuscarl.controls.DefinitionTextArea;
 import com.nearhuscarl.Data.DataAccess;
 import com.nearhuscarl.Models.Word;
 import com.nearhuscarl.controls.FxDialogs;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,8 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class Main implements Initializable {
+public class MainController implements Initializable {
     private DataAccess dataAccess;
+    private SettingsAccess settingsAccess;
     private HistoryAccess historyAccess;
     private SpellCheck spellCheck;
     public DefinitionTextArea definitionTextArea;
@@ -42,6 +45,7 @@ public class Main implements Initializable {
     public Button prevButton;
     public Button nextButton;
     public Button addButton;
+    public Button settingButton;
     private ArrayList<String> wordList;
     private ObservableList<Word> otherWordList;
     private History<String> history;
@@ -68,11 +72,10 @@ public class Main implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dataAccess = new DataAccess();
+        settingsAccess = new SettingsAccess();
         historyAccess = new HistoryAccess();
         otherWordListView.managedProperty().bind(otherWordListView.visibleProperty());
         otherWordList = FXCollections.observableArrayList();
-
-        historyAccess.loadHistory();
 
         Result<ArrayList<String>> result = dataAccess.selectNames();
         if (result.getInfo().getStatus() != Status.Success) {
@@ -95,13 +98,21 @@ public class Main implements Initializable {
         wordList = result.getData();
         spellCheck = new SpellCheck(wordList);
 
-        if (history.count() > 0) {
-            searchWord(history.current());
+        Result<Settings> result3 = settingsAccess.loadSettings();
+        if (result3.getInfo().getStatus() != Status.Success) {
+            ResultInfo info = result3.getInfo();
+            FxDialogs.showException("Error", info.getMessage(), info.getException());
+            return;
         }
-        else {
-            if (wordList.size() > 0) {
-                searchWord(wordList.get(0));
-            }
+        Settings settings = result3.getData();
+        HistoryOnStartup historyOnStartup = settings.getHistoryOnStartup();
+
+        if (historyOnStartup == HistoryOnStartup.OPEN_NEW_WORD) {
+            searchWord(wordList.get(0));
+        } else if (historyOnStartup == HistoryOnStartup.OPEN_WHERE_YOU_LEFT_OFF && history.count() > 0) {
+            searchWord(history.current());
+        } else if (historyOnStartup == HistoryOnStartup.OPEN_FROM_WORDLIST) {
+            searchWord(RandomUtil.getRandomItem(wordList));
         }
 
         wordListView.setItems(FXCollections.observableArrayList(wordList));
@@ -116,6 +127,7 @@ public class Main implements Initializable {
         prevButton.setOnAction(prevHistory);
         nextButton.setOnAction(nextHistory);
         addButton.setOnAction(addWord);
+        settingButton.setOnAction(openSettings);
 
         App.setOnClose(onClose);
 
@@ -257,8 +269,21 @@ public class Main implements Initializable {
     };
 
     private EventHandler<ActionEvent> addWord;
+    private EventHandler<ActionEvent> openSettings = (e) -> {
+        SettingsController.open();
+    };
 
     private EventHandler<WindowEvent> onClose = (e) -> {
-        historyAccess.saveHistory(history);
+        Result<Settings> result = settingsAccess.loadSettings();
+        if (result.getInfo().getStatus() != Status.Success) {
+            ResultInfo info = result.getInfo();
+            FxDialogs.showException("Error", info.getMessage(), info.getException());
+            return;
+        }
+        else {
+            Settings settings = result.getData();
+            history.trim(settings.getMaxHistory());
+            historyAccess.saveHistory(history);
+        }
     };
 }

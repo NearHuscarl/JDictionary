@@ -3,17 +3,8 @@ package com.nearhuscarl.Models;
 import java.util.ArrayList;
 
 public class History<T> {
-    private int maxHistory = 1000;
     private int currentIndex = -1;
     private ArrayList<T> collection = new ArrayList<>();
-
-    public int getMaxHistory() {
-        return maxHistory;
-    }
-
-    public void setMaxHistory(int maxHistory) {
-        this.maxHistory = maxHistory;
-    }
 
     public int getCurrentIndex() {
         return currentIndex;
@@ -84,11 +75,15 @@ public class History<T> {
         return collection.get(collection.size() - 1);
     }
 
-    public void trim() {
-        if (collection.size() > maxHistory)
+    public void trim(int limit) {
+        if (collection.size() > limit)
         {
-            for (int i = maxHistory; i <= collection.size() - 1;) {
-                collection.remove(i);
+            int oldWordCount = collection.size() - limit;
+            for (int i = 0; i < oldWordCount; i++) {
+                collection.remove(0);
+                if (currentIndex >= collection.size()) {
+                    currentIndex--;
+                }
             }
         }
     }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<?import com.nearhuscarl.controls.NumericTextField?>
+<VBox prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nearhuscarl.Controllers.SettingsController">
+    <children>
+        <TabPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="320.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="History">
+                    <content>
+                    </content>
+               <content>
+                  <GridPane alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="39.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="241.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="115.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="117.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="84.0" text="On startup" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin></Label>
+                        <RadioButton fx:id="newWordRadioButton" mnemonicParsing="false" prefHeight="17.0" prefWidth="121.0" text="Open new word" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="historyStartup" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="leftOffRadioButton" mnemonicParsing="false" text="Continue where you left off" toggleGroup="$historyStartup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <RadioButton fx:id="wordListRadioButton" mnemonicParsing="false" prefHeight="17.0" prefWidth="200.0" text="Open random word in Word List" toggleGroup="$historyStartup" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2">
+                           <children>
+                              <Label text="Max history" />
+                              <NumericTextField fx:id="maxHistoryTextField" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </GridPane>
+               </content>
+                </Tab>
+                <Tab text="Vocabulary" />
+            </tabs>
+        </TabPane>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+         <children>
+              <Button fx:id="cancelButton" mnemonicParsing="false" prefWidth="60.0" text="Cancel" />
+              <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="60.0" text="Save" />
+         </children>
+      </HBox>
+    </children>
+</VBox>
