@@ -2,18 +2,24 @@ package com.nearhuscarl.Controllers;
 
 import com.nearhuscarl.App;
 import com.nearhuscarl.Constants;
+import com.nearhuscarl.Data.DataAccess;
 import com.nearhuscarl.Data.HistoryAccess;
 import com.nearhuscarl.Data.SettingsAccess;
-import com.nearhuscarl.Helpers.*;
+import com.nearhuscarl.Helpers.BinarySearch;
+import com.nearhuscarl.Helpers.RandomUtil;
+import com.nearhuscarl.Helpers.SpellCheck;
+import com.nearhuscarl.Helpers.WordUtil;
 import com.nearhuscarl.Models.*;
 import com.nearhuscarl.controls.DefinitionTextArea;
-import com.nearhuscarl.Data.DataAccess;
 import com.nearhuscarl.controls.FxDialogs;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -21,22 +27,55 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.WindowEvent;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class MainController extends ControllerBase implements Initializable {
+
+    public static void open() {
+        try {
+            Stage window = new Stage();
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("Main.fxml"));
+            Parent root = loader.load();
+            ControllerBase controller = loader.getController();
+            controller.setStage(window);
+
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(App.class.getResource("App.css").toExternalForm());
+
+            window.getIcons().add(App.appIcon);
+            window.setTitle("JDictionary");
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        super.setStage(stage);
+
+        getStage().setOnCloseRequest(e -> {
+            onClose();
+            getStage().close();
+            App.mainAppActive = false;
+        });
+    }
+
     private DataAccess dataAccess;
     private SettingsAccess settingsAccess;
     private HistoryAccess historyAccess;
     private SpellCheck spellCheck;
     public DefinitionTextArea definitionTextArea;
-    public ListView wordListView;
-    public ListView otherWordListView;
+    public ListView<String> wordListView;
+    public ListView<Word> otherWordListView;
     public TextField inputTextField;
     public Button searchButton;
     public Button prevButton;
@@ -47,7 +86,7 @@ public class MainController implements Initializable {
     private ArrayList<String> wordList;
     private ObservableList<Word> otherWordList;
     private History<String> history;
-    private Callback<ListView, ListCell> wordListCellCb = param -> new ListCell<Word>() {
+    private Callback<ListView<Word>, ListCell<Word>> wordListCellCb = param -> new ListCell<Word>() {
         @Override
         protected void updateItem(Word item, boolean empty) {
             super.updateItem(item, empty);
@@ -61,10 +100,10 @@ public class MainController implements Initializable {
     };
 
     private String getSelectedWord() {
-        return (String)wordListView.getSelectionModel().getSelectedItem();
+        return wordListView.getSelectionModel().getSelectedItem();
     }
     private Word getSelectedOtherWord() {
-        return (Word)otherWordListView.getSelectionModel().getSelectedItem();
+        return otherWordListView.getSelectionModel().getSelectedItem();
     }
 
     @Override
@@ -128,9 +167,8 @@ public class MainController implements Initializable {
         settingButton.setOnAction(openSettings);
         aboutButton.setOnAction(openAbout);
 
-        App.setOnClose(onClose);
-
         definitionTextArea.setOnMouseClickedArea(onDoubleClickedDefinitionArea);
+        App.mainAppActive = true;
     }
 
     private void searchWord(String query) {
@@ -267,7 +305,20 @@ public class MainController implements Initializable {
         }
     };
 
-    private EventHandler<ActionEvent> addWord;
+    private EventHandler<ActionEvent> addWord = (e) -> {
+        Result<Settings> result = settingsAccess.loadSettings();
+        if (result.getInfo().getStatus() == Status.Success) {
+            Settings settings = result.getData();
+            List<String> wordList = settings.getCustomWordList();
+            String currentWord = history.current();
+
+            if (!wordList.contains(currentWord)) {
+                wordList.add(currentWord);
+            }
+
+            settingsAccess.saveSettings(settings);
+        }
+    };
     private EventHandler<ActionEvent> openSettings = (e) -> {
         SettingsController.open();
     };
@@ -275,17 +326,16 @@ public class MainController implements Initializable {
         AboutController.open();
     };
 
-    private EventHandler<WindowEvent> onClose = (e) -> {
+    private void onClose() {
         Result<Settings> result = settingsAccess.loadSettings();
         if (result.getInfo().getStatus() != Status.Success) {
             ResultInfo info = result.getInfo();
             FxDialogs.showException("Error", info.getMessage(), info.getException());
-            return;
         }
         else {
             Settings settings = result.getData();
             history.trim(settings.getMaxHistory());
             historyAccess.saveHistory(history);
         }
-    };
+    }
 }

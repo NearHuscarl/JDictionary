@@ -1,45 +1,27 @@
 package com.nearhuscarl;
 
+import com.nearhuscarl.Controllers.MainController;
+import com.nearhuscarl.Controllers.SystemTray;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
-import java.io.IOException;
 
 public class App extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
-    private static EventHandler<WindowEvent> onClose;
-    public static void setOnClose(EventHandler<WindowEvent> onClose) {
-        App.onClose = onClose;
-    }
+
+    public static Image appIcon = new Image(App.class.getResourceAsStream("icon.png"));
+    public static boolean mainAppActive = false;
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("App.css").toExternalForm());
+    public void start(Stage primaryStage) {
         Font.loadFont(App.class.getResource("OpenSansEmoji.ttf").toExternalForm(), 10);
         Font.loadFont(App.class.getResource("fontawesome-webfont.ttf").toExternalForm(), 10);
 
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
-        primaryStage.setTitle("JDictionary");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setOnCloseRequest(e -> {
-            if (onClose != null) {
-                onClose.handle(e);
-            }
-            primaryStage.close();
-        });
+        MainController.open();
+        SystemTray.open();
     }
 }
