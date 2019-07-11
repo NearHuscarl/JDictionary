@@ -1,7 +1,6 @@
 package com.nearhuscarl.Helpers;
 
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 public class BinarySearch {
     public static int prefix(String element, ArrayList<String> sequence) {

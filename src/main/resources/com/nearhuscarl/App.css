@@ -1,16 +1,16 @@
 .root {
-    -color-gray: #7F8C8D;
+    -color-gray: #343A40;
     /*-fx-font-family: "OpenSansEmoji";*/
 }
 
 .keyword {
     -fx-font-size: 26;
-    -fx-fill: darkcyan;
+    -fx-fill: #DC3545;
 }
 
 .wordform {
     -fx-font-size: 18;
-    -fx-fill: cyan;
+    -fx-fill: #e35d6a;
 }
 
 .definition {
@@ -37,13 +37,13 @@
     -fx-font-family: FontAwesome;
 }
 .icon-red {
-    -fx-fill: red;
+    -fx-fill: #DC3545;
 }
 .icon-red:hover {
-    -fx-fill: orange;
+    -fx-fill: #b8666e;
 }
 .icon-blue {
-    -fx-fill: blue;
+    -fx-fill: #007BFF;
 }
 .icon-blue:hover {
     -fx-fill: lightblue;
@@ -51,27 +51,24 @@
 
 
 .red {
-    -fx-fill: red;
+    -fx-fill: #DC3545;
 }
 .blue {
-    -fx-fill: blue;
+    -fx-fill: #007BFF;
 }
 
 .example {
-    -fx-fill: blue;
-}
-
-.example:hover {
-    -fx-fill: magenta;
+    -fx-fill: #17A2B8;
 }
 
 .header {
-    -fx-fill: orange;
-    -fx-font-weight: bold;
+    -fx-fill: #FFC107;
+    -fx-font-size: 18;
+    /*-fx-font-weight: bold;*/
 }
 
 .label {
-    -fx-fill: -color-gray;
+    -fx-fill: #6C757D;
 }
 
 .alert {

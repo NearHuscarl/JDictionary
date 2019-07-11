@@ -1,16 +1,5 @@
 package com.nearhuscarl.Helpers;
 
-//import com.google.gson.Gson;
-//import org.apache.commons.io.FilenameUtils;
-
-import com.google.gson.Gson;
-import com.nearhuscarl.Models.Word;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.*;
 import java.util.ArrayList;
 
 public class Helpers {
