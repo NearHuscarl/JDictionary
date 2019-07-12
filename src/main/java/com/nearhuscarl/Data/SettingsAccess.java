@@ -65,7 +65,7 @@ public class SettingsAccess {
             Document doc = XmlUtil.createDocument();
 
             // root element
-            Element rootElement = doc.createElement("history");
+            Element rootElement = doc.createElement("settings");
             doc.appendChild(rootElement);
 
             // child element of root

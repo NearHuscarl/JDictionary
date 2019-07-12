@@ -54,25 +54,22 @@ public class SystemTray {
     private List<String> wordList;
 
     private void setCurrentStatus(LearningStatus status) {
-        setCurrentStatus(status, false);
-    }
-    private void setCurrentStatus(LearningStatus status, boolean reset) {
+        currentStatus = status;
+
         switch (status) {
             case RUN:
-                if (reset) stopShowTimer();
+                stopShowTimer();
                 startShowTimer();
                 Platform.runLater(() -> {
                     if (statusItem != null) statusItem.setLabel("Stop");
                 });
                 break;
             case STOP:
-                stopShowTimer();
                 Platform.runLater(() -> {
                     if (statusItem != null) statusItem.setLabel("Resume");
                 });
                 break;
         }
-        currentStatus = status;
     }
 
     private static SystemTray Systemtray;
@@ -222,12 +219,15 @@ public class SystemTray {
         }
     }
     private void startShowTimer() {
+        if (currentStatus == LearningStatus.STOP) return;
+
         System.out.println("startShowTimer");
         showPopupTimer = new Timer();
         showPopupTimer.schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
+                        if (currentStatus == LearningStatus.STOP) return;
                         showStage();
                         startHideTimer();
                     }
@@ -263,7 +263,7 @@ public class SystemTray {
         if (result.getInfo().getStatus() == Status.Success) {
             Settings settings = result.getData();
 
-            setCurrentStatus(settings.isLearningEnabled() ? LearningStatus.RUN : LearningStatus.STOP, true);
+            setCurrentStatus(settings.isLearningEnabled() ? LearningStatus.RUN : LearningStatus.STOP);
             minInterval = settings.getMinInterval();
             secInterval = settings.getSecInterval();
             secDisplay = settings.getSecDisplay();
