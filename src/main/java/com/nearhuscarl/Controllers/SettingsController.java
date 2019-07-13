@@ -84,8 +84,19 @@ public class SettingsController extends ControllerBase implements Initializable 
             // make ListView editable using TextField as input
             customWordList.setCellFactory(TextFieldListCell.forListView());
             customWordList.setOnEditCommit(t -> {
-                customWordList.getItems().set(t.getIndex(), t.getNewValue());
-                customWordList.getItems().add("");
+                // add new cell
+                if (!t.getNewValue().equals("") && t.getIndex() == customWordList.getItems().size() - 1) {
+                    customWordList.getItems().set(t.getIndex(), t.getNewValue());
+                    customWordList.getItems().add("");
+                }
+                // modify existing cell
+                if (!t.getNewValue().equals("") && t.getIndex() <= customWordList.getItems().size() - 2) {
+                    customWordList.getItems().set(t.getIndex(), t.getNewValue());
+                }
+                // delete current cell
+                if (t.getNewValue().equals("") && t.getIndex() <= customWordList.getItems().size() - 2) {
+                    customWordList.getItems().remove(t.getIndex());
+                }
             });
             // add empty item so it can be edited in TextField
             if (customWordList.getItems().size() == 0 ||
